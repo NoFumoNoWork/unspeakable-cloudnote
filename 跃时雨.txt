@@ -1,0 +1,64 @@
+explorer.exe "https://mirrors.tuna.tsinghua.edu.cn/github-release/git-for-windows/git/LatestRelease/"
+
+第一轮已经找到了可直接获取的化学预训练语料、指令集、推理示范、工具调用数据和多步路线数据。**最贴合你说的「语料还是策略」的四个入口是 ChemPile、ChemCoTDataset、ChemToolBench 和 SynthStrategy。** 它们分别对应大规模语料、带解题过程的监督样本、工具使用决策，以及带策略标注的合成路线。[chempile.lamalab.org](https://chempile.lamalab.org/?utm_source=chatgpt.com)
+
+这轮按**化学大模型的数据用途**检索，覆盖化学文本、小分子、材料、聚合物、光谱，以及和化学任务有关的生物分子数据。表里的链接优先给原作者的下载页、仓库或项目页。已经核对公开入口和主要内容，未批量下载文件，也还没有逐个核完各子集的许可。
+
+## 1. 预训练、指令微调和多模态
+
+| 数据或项目 | 公开内容 | 入口 |
+|---|---|---|
+| **ChemPile** | 论文报告约 **250 GB、750 亿以上 token**。含 Education、Paper、Code、Reasoning、LIFT、MLIFT、Caption、Instruction 八类。可以从发布集合追到各子集。 | [项目页](https://chempile.lamalab.org/) · [数据集合](https://huggingface.co/collections/jablonkagroup/chempile) [proceedings.neurips.cc](https://proceedings.neurips.cc/paper_files/paper/2025/hash/505dc6a661fe8dcffaac4c3621eea69d-Abstract-Datasets_and_Benchmarks_Track.html?utm_source=chatgpt.com) |
+| **SMolInstruct / LlaSMol** | 小分子指令数据，涵盖性质预测、结构与名称转换、分子描述与生成、反应预测和逆合成。数据仓库提供任务和划分。 | [Hugging Face](https://huggingface.co/datasets/osunlp/SMolInstruct) [osunlp/SMolInstruct at main](https://huggingface.co/datasets/osunlp/SMolInstruct/blob/main/README.md?utm_source=chatgpt.com) |
+| **ChemData700K / ChemLLM** | 九类化学任务，公开版约 **73 万条问答**。数据卡说明它是从约 700 万条数据中抽样发布的。 | [Hugging Face](https://huggingface.co/datasets/AI4Chem/ChemData700K) [Datasets at Hugging Face](https://huggingface.co/datasets/AI4Chem/ChemData700K?utm_source=chatgpt.com) |
+| **Mol-Instructions** | 分子、蛋白质、生物分子文本指令，是这批清单里跨小分子和生物分子任务的直接入口。仓库另列数据许可。 | [数据](https://huggingface.co/datasets/zjunlp/Mol-Instructions) · [仓库](https://github.com/zjunlp/Mol-Instructions) [huggingface.co](https://huggingface.co/datasets/zjunlp/Mol-Instructions/tree/main?utm_source=chatgpt.com) |
+| **ChEBI-20 / MolT5** | 分子结构与自然语言描述配对，可做分子描述生成和文本到分子。原仓库含数据目录。 | [GitHub](https://github.com/blender-nlp/MolT5/tree/main/ChEBI-20_data) [GitHub](https://github.com/blender-nlp/MolT5?utm_source=chatgpt.com) |
+| **PubChemSTM / MoleculeSTM** | PubChem 衍生的分子—文本配对，适合做结构和文本的对齐、检索。 | [Hugging Face](https://huggingface.co/datasets/chao1224/MoleculeSTM) · [GitHub](https://github.com/chao1224/MoleculeSTM) [Datasets at Hugging Face](https://huggingface.co/datasets/chao1224/MoleculeSTM?utm_source=chatgpt.com) |
+| **ChemVLM SFT** | 化学视觉语言指令微调数据，作者提供数据仓库。 | [Hugging Face](https://huggingface.co/datasets/di-zhang-fdu/chemvlm-sft-datasets) [di-zhang-fdu/chemvlm-sft-datasets at main](https://huggingface.co/datasets/di-zhang-fdu/chemvlm-sft-datasets/blob/main/README.md?utm_source=chatgpt.com) |
+| **MatSci-Instruct / HoneyBee** | 材料科学指令数据。论文描述了多模型生成、验证和迭代改进的过程。 | [GitHub](https://github.com/BangLab-UdeM-Mila/NLP4MatSci-HoneyBee) [arxiv.org](https://arxiv.org/abs/2310.08511?utm_source=chatgpt.com) |
+| **LLaMat** | 材料领域继续预训练、指令微调与信息抽取。作者仓库按训练阶段提供数据和代码入口。 | [GitHub](https://github.com/M3RG-IITD/llamat) [GitHub](https://github.com/M3RG-IITD/llamat?utm_source=chatgpt.com) |
+| **S2ORC** | 大规模学术全文母库，可以筛化学、材料论文继续构建语料。当前入口由 Semantic Scholar 公共 API 提供。 | [GitHub](https://github.com/allenai/s2orc) [GitHub](https://github.com/allenai/s2orc?utm_source=chatgpt.com) |
+
+两个容易误记成「完整训练集已开源」的项目也值得追踪。**ChemDFM** 披露使用 340 亿 token 和 270 万条指令，论文明确列出的开放物是推理代码、评测数据和模型权重。**ChemMLLM** 论文列出 ChEBI-20、Mol-Instructions、PubChem、HierG2G、TDC 等来源，本轮确认到的是这些原料来源及论文，完整处理版待核实。[arxiv.org](https://arxiv.org/abs/2401.14818?utm_source=chatgpt.com)
+
+## 2. 推理示范、工具调用和多步策略
+
+| 数据或项目 | 实际公开到哪一层 | 入口 |
+|---|---|---|
+| **ChemCoTDataset** | 论文报告 **2.2 万条**带逐步推理的化学样本，围绕可结构化描述的分子操作。原数据卡可访问。 | [Hugging Face](https://huggingface.co/datasets/IDEA-AI4S/ChemCoTDataset) [proceedings.nips.cc](https://proceedings.nips.cc/paper_files/paper/2025/hash/e0ed6d6c2ec6df05f929b8a67b78513a-Abstract-Datasets_and_Benchmarks_Track.html?utm_source=chatgpt.com) |
+| **CheMM-Train / CheMM-R1** | **39,996 条**对话格式的 SFT 样本，含化学结构识别与解析的详细推理轨迹，另有配套评测。 | [训练集](https://huggingface.co/datasets/zzha6204/CheMM-Train) · [评测集](https://huggingface.co/datasets/zzha6204/CheMM-Bench) [Datasets at Hugging Face](https://huggingface.co/datasets/zzha6204/CheMM-Train?utm_source=chatgpt.com) |
+| **OpenScienceReasoning-2** | NVIDIA 发布的多学科合成推理数据，含详细解题过程。已有社区派生的化学 20K 版本，取数时可保留与上游的对应关系。 | [上游](https://huggingface.co/datasets/nvidia/OpenScienceReasoning-2) · [化学派生版](https://huggingface.co/datasets/TerryJCZhang/OpenSciReasoning-Chemistry-20K) [Datasets at Hugging Face](https://huggingface.co/datasets/nvidia/OpenScienceReasoning-2?utm_source=chatgpt.com) |
+| **ChemToolBench / CheMatAgent** | 公开的工具选择和参数填写数据。论文还描述了用自生成数据做步骤级策略微调，以及过程、结果奖励模型训练。奖励训练文件和树搜索轨迹的公开粒度仍需逐文件核对。 | [数据](https://huggingface.co/datasets/RadiCat/ChemToolBench) · [代码](https://github.com/AI4Chem/ChemistryAgent) [AI4Chem/ChemistryAgent · GitHub](https://github.com/AI4Chem/ChemistryAgent?utm_source=chatgpt.com) |
+| **SynthStrategy** | 你前面看的项目。README 提供约 **2.5 GB 已标注 USPTO 路线**的下载入口，还有策略函数库和标注接口。对做路线级策略监督最直接。 | [数据](https://doi.org/10.6084/m9.figshare.30146374) · [GitHub](https://github.com/schwallergroup/synth_strategy) [GitHub](https://github.com/schwallergroup/synth_strategy/blob/main/readme.md?utm_source=chatgpt.com) |
+| **PaRoutes** | MolecularAI 发布的多步逆合成评测框架和参考路线，可用来分析路线恢复、候选排序与路线多样性。 | [GitHub](https://github.com/MolecularAI/paroutes) [GitHub](https://github.com/MolecularAI/paroutes?utm_source=chatgpt.com) |
+
+对你在晶泰做的路线规划，**SynthStrategy 的路线策略标签、PaRoutes 的参考路线、ChemToolBench 的工具调用示范**是三种不同的监督信号。第一种适合学「这条路线用了什么策略」，第二种适合测「能否还原参考路线」，第三种适合学「下一步该调用什么工具、怎么填参数」。这轮尚未核实一个同时公开**候选路线、逐步决策、失败轨迹和奖励标注**的完整训练包。[GitHub](https://github.com/schwallergroup/synth_strategy/blob/main/readme.md?utm_source=chatgpt.com)
+
+## 3. 化学大模型评测数据
+
+| 数据或项目 | 主要测什么 | 入口 |
+|---|---|---|
+| **LAMALab ChemBench** | 跨有机、无机、材料、物化、分析等方向的化学知识与推理。项目已有多模态扩展。 | [官方项目](https://lamalab-org.github.io/chembench/) [chembench.lamalab.org](https://chembench.lamalab.org/?utm_source=chatgpt.com) |
+| **ChemBench4K / ChemLLM** | ChemLLM 配套的九类化学能力评测。名称和上面的 LAMALab ChemBench 接近，登记时带上发布方。 | [Hugging Face](https://huggingface.co/datasets/AI4Chem/ChemBench4K) [Datasets at Hugging Face](https://huggingface.co/datasets/AI4Chem/ChemBench4K?utm_source=chatgpt.com) |
+| **ChemLLMBench** | NeurIPS 2023 的八任务化学评测，适合复现早期通用 LLM 在分子任务上的基线。 | [GitHub](https://github.com/ChemFoundationModels/ChemLLMBench) [GitHub](https://github.com/ChemFoundationModels/ChemLLMBench?utm_source=chatgpt.com) |
+| **ChemEval** | 四个层级的文本与多模态化学评测，项目页提供数据和代码入口。 | [官方项目](https://ustc-starteam.github.io/ChemEval/) [ustc-starteam.github.io](https://ustc-starteam.github.io/ChemEval/?utm_source=chatgpt.com) |
+| **ChemEval2** | 面向工具集成化学推理的诊断评测。已定位论文，独立下载入口待核。 | [论文](https://aclanthology.org/2026.findings-emnlp.190/) [ACL Anthology](https://aclanthology.org/2026.findings-emnlp.190/?utm_source=chatgpt.com) |
+| **ChemCoTBench-V2** | 有规则验证的结构化化学推理评测。 | [数据](https://huggingface.co/datasets/fresnellll/ChemCoTBench-V2) · [代码](https://github.com/fresnellll/ChemCoTBench-V2) [Datasets at Hugging Face](https://huggingface.co/datasets/fresnellll/ChemCoTBench-V2?utm_source=chatgpt.com) |
+| **ChemPaperBench** | 从真实化学论文出题，含文本、图表和证据标注。数据卡登记 **376 道**经专家验证的问题，横跨九个子领域。 | [Hugging Face](https://huggingface.co/datasets/ITMO-NSS/ChemPaperBench) [Datasets at Hugging Face](https://huggingface.co/datasets/ITMO-NSS/ChemPaperBench?utm_source=chatgpt.com) |
+| **ChemO** | 来自 2025 国际化学奥赛的问题，适合测复杂解题。 | [Hugging Face](https://huggingface.co/datasets/IDEA-AI4S/ChemO) [IDEA-AI4S/ChemO at main](https://huggingface.co/datasets/IDEA-AI4S/ChemO/blob/main/README.md?utm_source=chatgpt.com) |
+| **MatSci-NLP / MatText** | 前者测材料科学文本任务，后者把材料结构表示成多种文本形式，适合比较表示方式对模型表现的影响。 | [MatSci-NLP](https://github.com/BangLab-UdeM-Mila) · [MatText](https://huggingface.co/datasets/n0w0f/MatText) [GitHub](https://github.com/BangLab-UdeM-Mila?utm_source=chatgpt.com) |
+
+## 4. 可用于构建新训练集的原始库和专业数据
+
+| 方向 | 首轮找到的入口 |
+|---|---|
+| **公开反应记录** | **Open Reaction Database** 提供正式数据仓库，可按子集下载。**USPTO Lowe** 是专利抽取反应的入口，公开副本也收录在 ChemPile 相关发布中。两者都要记录上游来源，同一专利或反应可能进入多个衍生集。 [ORD](https://github.com/open-reaction-database/ord-data) · [USPTO 副本](https://huggingface.co/datasets/jablonkagroup/uspto) [GitHub](https://github.com/open-reaction-database/ord-data?utm_source=chatgpt.com) |
+| **分子、性质和活性** | **PubChem、ChEMBL** 可作为结构、注释和活性数据的上游。PubChem 聚合多个贡献者，许可要追到相应来源。 [PubChem 下载](https://pubchem.ncbi.nlm.nih.gov/docs/downloads) · [ChEMBL 下载](https://www.ebi.ac.uk/training/online/courses/chembl-quick-tour/accessing-chembl-data/) [PubChem](https://pubchem.ncbi.nlm.nih.gov/docs/downloads?utm_source=chatgpt.com) |
+| **分子 3D 和量化** | **GEOM、PCQM4Mv2、QM9** 有公开原始入口。可用于构象、量化性质和分子结构任务，已有论文同时列出原始数据与处理版。 [数据可用性声明](https://www.nature.com/articles/s41467-026-69185-7#data-availability) [nature.com](https://www.nature.com/articles/s41467-026-69185-7?utm_source=chatgpt.com) |
+| **无机材料与晶体** | **OQMD** 提供 DFT 结构与性质。**MatterGen** 公布训练和评测数据，含约 60 万结构的 Alex-MP-20。**OMat24** 提供非平衡结构单点计算与弛豫数据。**Matbench** 提供下游性质基准。 [OQMD](https://oqmd.org/) · [MatterGen](https://github.com/microsoft/mattergen) · [OMat24](https://facebookresearch.github.io/fairchem/omat24/) · [Matbench](https://github.com/materialsproject/public-docs/blob/main/services/ml-and-ai-applications/matbench.md) [oqmd.org](https://oqmd.org/?utm_source=chatgpt.com) |
+| **材料合成** | **The Synthesis Project、Ceder Group 文本抽取数据**提供从材料文献抽出的合成记录，另有显式包含杂相的固相合成集。 [The Synthesis Project](https://synthesisproject.mit.edu/resources-2) · [溶液合成](https://github.com/CederGroupHub/text-mined-solution-synthesis_public) · [带杂相的固相合成](https://www.nature.com/articles/s41597-025-06222-y) [The Synthesis Project](https://synthesisproject.mit.edu/resources-2?utm_source=chatgpt.com) |
+| **聚合物** | **polyBERT** 有论文配套 Zenodo 发布，可追聚合物语言模型的数据与下游性质预测资源。 [Zenodo](https://zenodo.org/records/7969082) [doi.org](https://doi.org/10.1038/s41467-023-39868-6?utm_source=chatgpt.com) |
+| **光谱与结构解析** | **MassBank、MassSpecGym** 是质谱数据与基准入口。**NMRExtractor** 提供从开放文献抽取实验 NMR 数据的研究入口。 [MassBank](https://github.com/MassBank/MassBank-data) · [MassSpecGym](https://github.com/pluskal-lab/MassSpecGym) · [NMRExtractor](https://pubs.rsc.org/en/content/articlepdf/2025/sc/d4sc08802f) [GitHub](https://github.com/MassBank/MassBank-data?utm_source=chatgpt.com) |
+| **核酸结构与注释** | **Rfam** 有 RNA 家族及下载入口，**Nucleic Acid Knowledgebase** 面向核酸 3D 结构，**FURNA** 汇集 RNA 结构与功能注释。适合登记为结构任务的上游候选。 [Rfam](https://docs.rfam.org/en/latest/about-rfam.html) · [NAKB](https://pmc.ncbi.nlm.nih.gov/articles/PMC10767938/) · [FURNA](https://pmc.ncbi.nlm.nih.gov/articles/PMC10769261/) [Rfam Help documentation](https://docs.rfam.org/en/latest/about-rfam.html?utm_source=chatgpt.com) |
+
+如果你现在就要给主管一个可落地的首批范围，我会把 **ChemPile、SMolInstruct、ChemData700K、Mol-Instructions、ChemCoTDataset、CheMM-Train、ChemToolBench、SynthStrategy** 列进训练候选，把 **LAMALab ChemBench、ChemEval、ChemPaperBench、PaRoutes** 登记为评测候选。进公司训练前，最需要补齐的字段是**具体版本、上游来源、数据许可和 train/test 划分**。其中尤其要查两类重叠：SMolInstruct 明确复用了 ChEBI-20 和 Mol-Instructions 的部分数据，USPTO 又是多个反应和路线发布的共同上游。数据集名字可以累加，独立样本数得按来源核算。[pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC13654301/?utm_source=chatgpt.com)
